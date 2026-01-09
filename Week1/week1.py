@@ -4,6 +4,7 @@ import numpy as np
 
 g = 9.81
 xMax = 30.0
+fontSize=12
 
 # Create a linear set of values with 1000 iterations
 x = np.linspace(0.0,xMax,1000)
@@ -16,5 +17,10 @@ for i in x:
 # Plot a graph of plot time against drop distance.
 
 plt.plot(x,t,'r-','linewidth',2)
+plt.box(on=True)
+plt.setp(plt.xlabel('x'),fontsize=fontSize)
+plt.setp(plt.ylabel('y'),fontsize=fontSize)
+plt.xlabel('distance: x/m')
+plt.ylabel('time: t/s')
+plt.title('Distance dropped vs time taken without air resistance')
 plt.show()
-
