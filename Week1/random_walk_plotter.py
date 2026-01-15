@@ -3,8 +3,7 @@
 # Between each step change the direction by a random value
 # Plot first "n" steps.
 import math
-# Imports and disables interactive display
-import matplotlib; matplotlib.use('Agg'); import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import numpy as np
 
 # Optimises line rendering at some cost of quality
