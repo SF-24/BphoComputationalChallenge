@@ -24,6 +24,7 @@ maxIterations = 1000
 
 # Generate dataset
 for n in range(maxIterations):
+    # Differential equation: f''(t) + kf'(t) + omega^2*f(t)
     a = -math.pow(omega,2)*x[n] -k*v[n]
     v.append(v[n] + a*dt)
     x.append(x[n] + v[n+1]*dt)
