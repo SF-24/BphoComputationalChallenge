@@ -14,7 +14,7 @@ t = [0.0]
 T = 1.0 # period in seconds
 omega = 2*math.pi/T
 
-k=1.0 # constant for resistive force.
+k=4.0 # constant for resistive force.
 # SET TO k=0 FOR SIMPLE HARMONIC MOTION
 # SET TO k=10 FOR CRITICAL DAMPING
 
