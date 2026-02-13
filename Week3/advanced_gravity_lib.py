@@ -85,13 +85,6 @@ def animate(i):
     for mass_obj in objects:
         mass_obj.anim_object.center = (mass_obj.x[i*interval]/AU, mass_obj.y[i*interval]/AU)
     return [m.anim_object for m in objects]  # SAME artists every time
-    # anim_objects = []
-    # if i>=n:
-    #     return anim_objects
-    # for mass_obj_1 in objects:
-    #     mass_obj_1.anim_object.center=(mass_obj_1.x[i] / AU, mass_obj_1.y[i] / AU)
-    #     anim_objects.append(mass_obj_1.anim_object)
-    # return anim_objects
 
 # Render an animation of the simulation. Required to export it or preview it
 def render():
