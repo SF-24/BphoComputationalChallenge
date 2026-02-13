@@ -8,14 +8,15 @@ import matplotlib.animation as animation
 import matplotlib ; matplotlib.use('TkAgg')  # or 'nbAgg' for Jupyter
 
 radius = 0.1
-x = [-1.0]
+x = [-1.0] #[-1.0] is default
 v = [0.0]
 t = [0.0]
 T = 1.0 # period in seconds
 omega = 2*math.pi/T
 
-k=4.0 # constant for resistive force.
+k=4.0 # constant for resistive force. Make negative for resonance
 # SET TO k=0 FOR SIMPLE HARMONIC MOTION
+# SET TO k=4 FOR VERY VISIBLE LIGHT DAMPING
 # SET TO k=10 FOR CRITICAL DAMPING
 
 dt = 0.01 # time change in seconds.
