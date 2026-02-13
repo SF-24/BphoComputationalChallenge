@@ -50,55 +50,29 @@ n=50000 # was 1000000
 interval=100
 axis_scales=5  # was 5
 
-# CUSTOMISE WHAT HAPPENS HERE!!
-# Create the object
-create_object(1988475000000000000000000000000, 0, 0, 500, 0, 0.2, "red")
-create_object(198847500000000000000000000000, 2.0*AU, 1.0*AU, -10000, -1000, 0.1, "blue")
-create_object(198847500000000000000000000000, -2.0*AU, 1.0*AU, 10000, 100, 0.1, "green")
+def simulate():
+    # Create mass object0
 
-# Create mass object0
-
-for i in range(n):
-    for mass_obj in objects:
-        x = mass_obj.x
-        y = mass_obj.y
-        x_ = x[i]
-        y_ = y[i]
-        v_x = mass_obj.v_x[i]
-        v_y = mass_obj.v_y[i]
-        for M_obj in objects:
-            if not(mass_obj==M_obj):
-                x0 = M_obj.x[i]
-                y0 = M_obj.y[i]
-                dx,dy=cp.get_vector_resolver(x0,y0,x_,y_)
-                a = cp.get_gravitational_acceleration(M_obj.mass,mass_obj.mass,cp.get_distance_squared(x0,y0,x_,y_))
-                v_x+=dx*a*dt
-                v_y+=dy*a*dt
-        x_+=v_x*dt
-        y_+=v_y*dt
-        mass_obj.add_velocity(v_x,v_y)
-        mass_obj.add_pos(x_,y_)
-
-# Declare axis
-fig, ax = plt.subplots()
-ax.set_aspect("equal")
-# Axis sizes and circles for motion
-ax.set_xlabel('x / AU')
-ax.set_ylabel('y / AU')
-ax.set_title('Simple Gravity Simulation')
-ax.grid(True)
-ax.set_xlim(-axis_scales,axis_scales)
-ax.set_ylim(-axis_scales,axis_scales)
-
-print(len(objects))                 # should be 2
-print(objects[0].x[0], objects[0].y[0])  # 0.0 0.0
-print(objects[1].x[0], objects[1].y[0])  # 1.0 1.0
-print(objects[1].x[10], objects[1].y[10])  # should differ from (0,0)
-
-# Initialise objects
-for mass_obj_plot in objects:
-    ax.plot(np.divide(mass_obj_plot.x,AU), np.divide(mass_obj_plot.y, AU), label='Orbit',zorder=1)
-    ax.add_patch(mass_obj_plot.anim_object)
+    for i in range(n):
+        for mass_obj in objects:
+            x = mass_obj.x
+            y = mass_obj.y
+            x_ = x[i]
+            y_ = y[i]
+            v_x = mass_obj.v_x[i]
+            v_y = mass_obj.v_y[i]
+            for M_obj in objects:
+                if not(mass_obj==M_obj):
+                    x0 = M_obj.x[i]
+                    y0 = M_obj.y[i]
+                    dx,dy=cp.get_vector_resolver(x0,y0,x_,y_)
+                    a = cp.get_gravitational_acceleration(M_obj.mass,mass_obj.mass,cp.get_distance_squared(x0,y0,x_,y_))
+                    v_x+=dx*a*dt
+                    v_y+=dy*a*dt
+            x_+=v_x*dt
+            y_+=v_y*dt
+            mass_obj.add_velocity(v_x,v_y)
+            mass_obj.add_pos(x_,y_)
 
 def init():
     for mass_obj in objects:
@@ -129,16 +103,38 @@ def animate(i):
     #     anim_objects.append(mass_obj_1.anim_object)
     # return anim_objects
 
-frame_num= int(np.floor(n / interval))
-anim = animation.FuncAnimation(fig, animate, init_func=init, frames=frame_num, interval=5, blit=True) # interval was 20
+def render():
+    # Declare axis
+    fig, ax = plt.subplots()
+    ax.set_aspect("equal")
+    # Axis sizes and circles for motion
+    ax.set_xlabel('x / AU')
+    ax.set_ylabel('y / AU')
+    ax.set_title('Less Simple Gravity Simulation')
+    ax.grid(True)
+    ax.set_xlim(-axis_scales,axis_scales)
+    ax.set_ylim(-axis_scales,axis_scales)
 
-# Export
-writer = animation.PillowWriter (fps=30)
-anim.save('gravity.gif', writer=writer)
+    print(len(objects))                 # should be 2
+    print(objects[0].x[0], objects[0].y[0])  # 0.0 0.0
+    print(objects[1].x[0], objects[1].y[0])  # 1.0 1.0
+    print(objects[1].x[10], objects[1].y[10])  # should differ from (0,0)
 
-plt.ion()
-# plt.show(block=True)
-plt.pause(2.0)
+    # Initialise objects
+    for mass_obj_plot in objects:
+        ax.plot(np.divide(mass_obj_plot.x,AU), np.divide(mass_obj_plot.y, AU), label='Orbit',zorder=1)
+        ax.add_patch(mass_obj_plot.anim_object)
 
-print("Simulation complete.")
+    frame_num= int(np.floor(n / interval))
+    anim = animation.FuncAnimation(fig, animate, init_func=init, frames=frame_num, interval=5, blit=True) # interval was 20
+
+    # Export
+    writer = animation.PillowWriter (fps=30)
+    anim.save('gravity.gif', writer=writer)
+
+    plt.ion()
+    # plt.show(block=True)
+    plt.pause(2.0)
+
+    print("Simulation complete.")
 
