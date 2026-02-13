@@ -4,12 +4,16 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 matplotlib.use('TkAgg')  # or 'nbAgg' for Jupyter
+
+# A library created in python and visible as a file outside the week folders ('custom_lib.py')
+# It is required for many of the simulations (starting in Week 3) to run.
 import custom_lib as cp
 
-# Constants
+# Constants. Used in physics calculations.
+# Here, only the astronomical unit given in metres.
 AU = 149597900000.0
-slingshot= True
 
+# The class definition of the mass object in the simulation.
 class MassObject:
     def __init__(self, mass, x_0, y_0, v_x_0, v_y_0, radius, colour):
         self.mass = mass
@@ -32,19 +36,28 @@ class MassObject:
         self.x.append(x)
         self.y.append(y)
 
+# Adding the object registers the list type
 objects = [MassObject(0,0,0,0,0, 0.1, "red")]
 objects.clear()
 
+# Object creation class. Used by an external file to add mass objects to the simulation
 def create_object(mass, x_0, y_0, v_x_0, v_y_0, radius, colour):
     new_object = MassObject(mass, x_0, y_0, v_x_0, v_y_0, radius, colour)
     objects.append(new_object)
 
-dt=1000 # was 1000 #86400 # in seconds
+# Declare variables. A smaller dt gives a more accurate simulation
+# n determines the number of iterations the simulation runs for
+# The interval is the interval in iterations where a frame is rendered.
+# Axis scales determines the size of the area which is visible in the render.
+dt=1000 #86400 # in seconds
 n=50000 # was 1000000
 interval=100
 axis_scales=5  # was 5
 
 # Simulate the motion
+# This is done by determining the force and applying acceleration to velocity
+# The velocity is then applied to the position of the object.
+# Each object is acted upon by every other object by a gravitational force.
 def simulate():
     # Create mass object0
 
@@ -76,6 +89,7 @@ def init():
         mass_obj.anim_object.center = (mass_obj.x[0]/AU, mass_obj.y[0]/AU)
     return [m.anim_object for m in objects]
 
+# Get current frame
 def get_frame_position(it=0):
     it+=1
     return it
@@ -110,6 +124,7 @@ def render():
     print("[ASI] Simulation rendering complete")
 
 # Preview the simulation in a separate window
+# Must first render the animation
 def preview():
     print("[ASI] Opening simulation preview")
     plt.ion()
@@ -117,6 +132,7 @@ def preview():
     plt.pause(2.0)
 
 # Export the simulation as a GIF
+# Requires you to first render the animation
 def export(filename):
     print("[ASI] Exporting simulation preview")
     # Export
