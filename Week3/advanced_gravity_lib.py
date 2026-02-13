@@ -50,6 +50,7 @@ n=50000 # was 1000000
 interval=100
 axis_scales=5  # was 5
 
+# Simulate the motion
 def simulate():
     # Create mass object0
 
@@ -73,6 +74,7 @@ def simulate():
             y_+=v_y*dt
             mass_obj.add_velocity(v_x,v_y)
             mass_obj.add_pos(x_,y_)
+    print("[ASI] Completed simulation calculations")
 
 def init():
     for mass_obj in objects:
@@ -103,6 +105,7 @@ def animate(i):
     #     anim_objects.append(mass_obj_1.anim_object)
     # return anim_objects
 
+# Render an animation of the simulation. Required to export it or preview it
 def render():
     # Declare axis
     fig, ax = plt.subplots()
@@ -115,26 +118,28 @@ def render():
     ax.set_xlim(-axis_scales,axis_scales)
     ax.set_ylim(-axis_scales,axis_scales)
 
-    print(len(objects))                 # should be 2
-    print(objects[0].x[0], objects[0].y[0])  # 0.0 0.0
-    print(objects[1].x[0], objects[1].y[0])  # 1.0 1.0
-    print(objects[1].x[10], objects[1].y[10])  # should differ from (0,0)
-
     # Initialise objects
     for mass_obj_plot in objects:
         ax.plot(np.divide(mass_obj_plot.x,AU), np.divide(mass_obj_plot.y, AU), label='Orbit',zorder=1)
         ax.add_patch(mass_obj_plot.anim_object)
 
     frame_num= int(np.floor(n / interval))
+    global anim
     anim = animation.FuncAnimation(fig, animate, init_func=init, frames=frame_num, interval=5, blit=True) # interval was 20
+    print("[ASI] Simulation rendering complete")
 
+# Preview the simulation in a separate window
+def preview():
+    print("[ASI] Opening simulation preview")
+    plt.ion()
+    plt.show(block=True)
+    plt.pause(2.0)
+
+# Export the simulation as a GIF
+def export():
+    print("[ASI] Exporting simulation preview")
     # Export
     writer = animation.PillowWriter (fps=30)
     anim.save('gravity.gif', writer=writer)
-
-    plt.ion()
-    # plt.show(block=True)
-    plt.pause(2.0)
-
-    print("Simulation complete.")
+    print("[ASI] Simulation export complete")
 
