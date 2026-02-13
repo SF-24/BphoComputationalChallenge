@@ -12,4 +12,4 @@ asi.create_object(solar_mass/100, 0, -1.0*AU, 120, 1000, 0.1, "orange")
 # Simulate the motion and render it
 asi.simulate()
 asi.render()
-asi.export()
+asi.export(filename="gravity")

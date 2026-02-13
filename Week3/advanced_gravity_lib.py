@@ -11,12 +11,6 @@ AU = 149597900000.0
 slingshot= True
 
 class MassObject:
-    # x = []
-    # y = []
-    # v_x = []
-    # v_y = []
-    # radius = 0.1
-    # anim_object: Circle = plt.Circle((0,0),0.1, color='red')
     def __init__(self, mass, x_0, y_0, v_x_0, v_y_0, radius, colour):
         self.mass = mass
         self.x=[x_0]
@@ -76,23 +70,17 @@ def simulate():
             mass_obj.add_pos(x_,y_)
     print("[ASI] Completed simulation calculations")
 
+# When animation starts
 def init():
     for mass_obj in objects:
         mass_obj.anim_object.center = (mass_obj.x[0]/AU, mass_obj.y[0]/AU)
-        # ax.add_patch(mass_obj.anim_object)
     return [m.anim_object for m in objects]
-    # anim_objects = []
-    # for mass_obj_0 in objects:
-    #     mass_obj_0.anim_object.center = (mass_obj_0.x[0]/AU, mass_obj_0.y[0]/AU)
-    #     ax.add_patch(mass_obj_0.anim_object)
-    #     anim_objects.append(mass_obj_0.anim_object)
-    # return anim_objects
 
 def get_frame_position(it=0):
     it+=1
     return it
 
-# Run anim.
+# Run animation
 def animate(i):
     for mass_obj in objects:
         mass_obj.anim_object.center = (mass_obj.x[i*interval]/AU, mass_obj.y[i*interval]/AU)
@@ -136,10 +124,10 @@ def preview():
     plt.pause(2.0)
 
 # Export the simulation as a GIF
-def export():
+def export(filename):
     print("[ASI] Exporting simulation preview")
     # Export
     writer = animation.PillowWriter (fps=30)
-    anim.save('gravity.gif', writer=writer)
+    anim.save(filename + '.gif', writer=writer)
     print("[ASI] Simulation export complete")
 
